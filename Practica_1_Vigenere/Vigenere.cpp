@@ -80,3 +80,17 @@ void Vigenere::showencription(void){
 	cout << "Cadena Encriptada: " << encrypted_message_output_ << endl;
 	cout << "Tamano Cadena: " << encrypted_message_output_.size() << endl;
 };
+
+void Vigenere::unencrypt(void){
+	for (int i = 0; i < encrypted_message_.size(); ++i)
+	{
+		int j = i % encrypted_key_.size();
+		int valorletra = encrypted_key_[j];
+		if (encrypted_message_[i] >= 26)
+		{
+			encrypted_message_[i] %= 26;
+		}
+		int valorletra = encrypted_message_[i] -  
+		unencrypted_message_output_[i]
+	}
+};

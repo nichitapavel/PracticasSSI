@@ -5,9 +5,9 @@ Vigenere::Vigenere(string key, string message){
 	key_ = key;
 	message_ = message;
 	alfabet();
-}
+};
 
-Vigenere::~Vigenere(){}
+Vigenere::~Vigenere(){};
 
 int Vigenere::EnteroDeLetra(char letra){
 	for (int i = 0; i < alfabet_.size(); ++i)
@@ -17,7 +17,7 @@ int Vigenere::EnteroDeLetra(char letra){
 			return i;
 		}
 	}
-}
+};
 
 void Vigenere::encrypt(){
 	cout << key_ << endl;
@@ -48,33 +48,14 @@ void Vigenere::encrypt(){
 		char letra_output = alfabet_[valorletra];
 		encrypted_message_output_.push_back(letra_output);
 	}
-}
-
-void Vigenere::stringtoascii(){
-	/*
-	vector<int> key_ascii; 
-	for (int i = 0; i < key_.size(); ++i)
-	{
-		int aux = (int)key_[i];
-		cout << aux << endl;
-		//key_ascii.push_back(aux);
-	}
-	
-	
-	for (int i = 0; i < key_ascii.size(); ++i)
-	{
-		cout << key_ascii[i] << endl;
-	}
-	*/
-}
+};
 
 void Vigenere::alfabet(void){
-	//cout << "aaaaaaaaa" << endl;
 	for (int i = 0; i < 26; ++i)
 	{
 		alfabet_.push_back((char)('A' + i));
 	}
-}
+};
 
 void Vigenere::showencription(void){
 	cout << "Cadena Encriptada: " << encrypted_message_output_ << endl;
@@ -85,12 +66,18 @@ void Vigenere::unencrypt(void){
 	for (int i = 0; i < encrypted_message_.size(); ++i)
 	{
 		int j = i % encrypted_key_.size();
-		int valorletra = encrypted_key_[j];
-		if (encrypted_message_[i] >= 26)
+		int valorletra = encrypted_message_[i] - encrypted_key_[j];
+
+		if (valorletra < 0)
 		{
-			encrypted_message_[i] %= 26;
+			valorletra += 26;
 		}
-		int valorletra = encrypted_message_[i] -  
-		unencrypted_message_output_[i]
+		char letra = alfabet_[valorletra];
+		unencrypted_message_output_.push_back(letra);
 	}
+};
+
+void Vigenere::showunencription(void){
+	cout << "Cadena Desencriptada: " << unencrypted_message_output_ << endl;
+	cout << "Tamano Cadena: " << unencrypted_message_output_.size() << endl;
 };

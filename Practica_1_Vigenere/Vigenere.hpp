@@ -17,7 +17,6 @@ class Vigenere
 	vector<char> alfabet_;
 
 private:
-	void stringtoascii(void);
 	void alfabet(void);
 	int EnteroDeLetra(char letra);
 
@@ -27,4 +26,5 @@ public:
 	void encrypt(void);
 	void showencription(void);
 	void unencrypt(void);
+	void showunencription(void);
 };

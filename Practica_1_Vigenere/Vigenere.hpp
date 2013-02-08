@@ -10,6 +10,7 @@ class Vigenere
 {
 	string key_;
 	string message_;
+	string encrypted_message_output_;
 	vector<int> encrypted_message_;
 	vector<int> encrypted_key_;
 	vector<char> alfabet_;
@@ -23,4 +24,5 @@ public:
 	Vigenere(string key, string message);
 	~Vigenere(void);
 	void encrypt(void);
+	void showencription(void);
 };

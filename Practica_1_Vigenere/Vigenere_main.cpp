@@ -13,4 +13,5 @@ int main(){
 	
 	Vigenere a(key, message);
 	a.encrypt();
+	a.showencription();
 }

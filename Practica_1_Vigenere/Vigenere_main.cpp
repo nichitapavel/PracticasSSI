@@ -2,18 +2,13 @@
 
 int main(){
 	string key, message;
-	/*
-	cout << "Dame Clave: ";
-	cin >> key;
-	cout << "Dame Mensaje: ";
-	cin >> message;
-	*/
+	
+
 	key = "MISION";
 	message = "ESTEMENSAJESEAUTODESTRUIRA";
 	
+	system("clear");
 	Vigenere a(key, message);
-	a.encrypt();
-	a.showencription();
-	a.unencrypt();
-	a.showunencription();
-}
+	a.Encrypt();
+	a.UnEncrypt();
+};

@@ -1,6 +1,6 @@
 #include "Vigenere.hpp"
 
-string GetString(void);
+string GetMessage(void);
 
 int main(){
 	system("clear");
@@ -8,7 +8,7 @@ int main(){
 	cout << "Key: ";
 	cin >> key;
 
-	message = GetString();
+	message = GetMessage();
 
 	cout << endl;
 	cout << "******************* RESULT *******************" << endl;
@@ -20,20 +20,36 @@ int main(){
 	system("clear");
 };
 
-string GetString(void){
+/*
+METHOD GetMessage obtiene el mensaje que se quiere encriptar
+sin la necesitat del usuario de escribir el mensaje sin espacios
+*/
+
+string GetMessage(void){
+ 	// declaraciones iniciales, el espacio blanco que se utilizara para cazar
+ 	// i guardamos la posicion del espacio en blanco
+ 	// message se guarda el mensaje sin espacios
  	char space = ' ';
  	int i;
  	string message;
  	
+ 	// el usuario introduce el mensaje y lo guardamos en message con espacios
  	cout << "Message: ";
  	cin.get();
  	getline(cin, message);
  	
+ 	// se obtiene la posicion del primer espacio blanco encontrado
  	i = message.find(space);
+ 	// si no se encuentra espacion en blanco se devuelve -1
+ 	// hasat que encuentra espacio en blanco
  	while (i != -1){
+ 		//borras el espacio de la posicion i y
+ 		// como es solo un caracter, tamaño 1
  		message.erase(i, 1);
+ 		// se vuelve a buscar el siguiente espacio
  		i = message.find(space);
  	}
 
+ 	// se devuelve el mensaje sin espacios
  	return message;
 };

@@ -25,8 +25,7 @@ void Vigenere::Encrypt(){
 	
 	EncryptMessage();
 
-	cout << "Cadena Encriptada: " << encrypted_message_output_ << endl;
-	cout << "Tamano Cadena: " << encrypted_message_output_.size() << endl;
+	cout << "Encrypted Message: " << encrypted_message_output_ << endl;
 	cout << endl;
 };
 
@@ -52,8 +51,7 @@ void Vigenere::UnEncrypt(void){
 		unencrypted_message_output_.push_back(letter);
 	}
 
-	cout << "Cadena Desencriptada: " << unencrypted_message_output_ << endl;
-	cout << "Tamano Cadena: " << unencrypted_message_output_.size() << endl;
+	cout << "Uncrypted Message: " << unencrypted_message_output_ << endl;
 	cout << endl;
 };
 

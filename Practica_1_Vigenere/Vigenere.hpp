@@ -1,6 +1,7 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include <algorithm>
 #include "stdlib.h"
 
 // MOD es el tamaño del alfabeto, es una constante que no cambia

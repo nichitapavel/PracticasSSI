@@ -8,6 +8,8 @@ int main(){
 	cout << "Key: ";
 	cin >> key;
 
+	transform(key.begin(), key.end(), key.begin(), ::toupper);
+
 	message = GetMessage();
 
 	cout << endl;
@@ -41,7 +43,7 @@ string GetMessage(void){
  	// se obtiene la posicion del primer espacio blanco encontrado
  	i = message.find(space);
  	// si no se encuentra espacion en blanco se devuelve -1
- 	// hasat que encuentra espacio en blanco
+ 	// hasat que encuentra espacio blanco en
  	while (i != -1){
  		//borras el espacio de la posicion i y
  		// como es solo un caracter, tamaño 1
@@ -50,6 +52,9 @@ string GetMessage(void){
  		i = message.find(space);
  	}
 
+ 	// pasar a UPPERCASE si es necesario
+ 	transform(message.begin(), message.end(), message.begin(), ::toupper);
+ 	
  	// se devuelve el mensaje sin espacios
  	return message;
 };

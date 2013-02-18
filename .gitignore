@@ -165,3 +165,6 @@ pip-log.txt
 # Ficheros no necesarios de C++
 *.o
 test
+
+# Ignorar los .zip
+*.zip

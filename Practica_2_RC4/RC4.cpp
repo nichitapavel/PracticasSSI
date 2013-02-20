@@ -18,7 +18,36 @@ void RC4::Initialization(void){
 		j = (j + S[i] + K[i]) % 256;
 		swap(S[i], S[j]);
 	}
-	View();
+	//View();
+}
+
+void RC4::DecimalToBinary(int decimal){
+	vector<int> binary;
+	int intdecimal = decimal;
+	while (intdecimal != 0){
+		binary.push_back(intdecimal % 2);
+		intdecimal = intdecimal / 2;
+	}
+
+	if (binary.size() <= 8){
+		while (binary.size() < 8){
+			binary.push_back(0);
+		}
+	}
+
+	vector<int> v;
+	
+	for (int i = binary.size() - 1; i > 0; --i)
+	{	
+		v.push_back(binary[i]);
+	}
+
+	binary = v;
+	for (int i = 0; i < binary.size(); ++i)
+	{
+		cout << binary[i] << " ";
+	}
+	cout << endl;
 }
 
 /*
@@ -75,10 +104,6 @@ void RC4::PRGA(){
 void RC4::ViewC(void){
 	for (int i = 0; i < C.size(); ++i)
 	{
-		string a;
-		stringstream s;
-		s << C[i];
-		a = s.str();
-		cout << s <<  endl;
+		DecimalToBinary(C[i]);
 	}
 }

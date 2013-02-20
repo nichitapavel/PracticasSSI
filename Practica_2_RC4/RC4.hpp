@@ -4,6 +4,8 @@
 #include <algorithm>
 #include "stdlib.h"
 #include <sstream>
+#include <bitset>
+#include <limits>
 
 // MOD es el tamaño del alfabeto, es una constante que no cambia
 #define MOD 26
@@ -24,6 +26,7 @@ class RC4
 private:
 	void Initialization(void);
 	void View(void);
+	void DecimalToBinary(int decimal);
 	
 public:
 	RC4(vector<int> key, vector<int> message);

@@ -12,7 +12,7 @@ int main(){
 	message.push_back(34);
 	//cout << "Key: ";
 	//cin >> key;
-
+	
 	//transform(key.begin(), key.end(), key.begin(), ::toupper);
 
 	//message = GetMessage();
@@ -32,6 +32,7 @@ int main(){
 	*/
 	a.PRGA();
 	a.ViewC();
+
 	//a.Encrypt();
 	//a.UnEncrypt();
 	//cin.get();

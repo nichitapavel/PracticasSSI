@@ -6,6 +6,7 @@
 #include <sstream>
 #include <bitset>
 #include <limits>
+#include <math.h>
 
 // KEYSIZE es el tamaño del vector S, es una constante que no cambia
 #define KEYSIZE 256
@@ -29,7 +30,8 @@ private:
 	void KSA(void);
 	
 	void PGRACompleteByte(vector<int>& binary);
-	void PGRADecimalToBinary(int decimal);
+	vector<int> PGRADecimalToBinary(int decimal);
+	void PGRABinaryToDecimal(vector<int> binary);
 	void PGRABinaryOutput(vector<int> binary);
 	void PGRACalculateMod(vector<int>& binary_in_reverse, int integer);
 	void PGRACorrectBinary(vector<int> binary_in_reverse, vector<int>& binary);

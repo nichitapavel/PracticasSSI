@@ -10,24 +10,30 @@ class A5_1
 	vector<int> Key1_;
 	vector<int> Key2_;
 	vector<int> Key3_;
-	vector<int> Output_;
-	vector<int> key_position_;
 	vector<int> LFSR1_;
 	vector<int> LFSR2_;
 	vector<int> LFSR3_;
+	vector<int> clocking_bits_;
+	vector<int> Output_;
 
 
 private:
-	
+	vector<int> GetInputKey(void);
+	vector<int> GetInputLFSR(void);
+	vector<int> GetInputClockingBits(void);
+	void ReSetLFSR(vector<int>& input);
+	void DefaultInput(void);
+	void GetNewInput(void);
+	void BitEncrypt(void);
+	int  MajorityRule(void);
+	int  CalculateEntryBit(vector<int> Key, vector<int> LFSR);
+	void MoveKeyVector(vector<int>& Key, int input);
+	void MoveContainer(void);
+	void Output(void);
+
 public:
 	A5_1(void);
 	~A5_1(void);
-	int FuncionMayoritaria(void);
-	void Desplazamiento(void);
-	void BitEncrypt(void);
+
 	void Encrypt(void);
-	void Mover(vector<int>& Key, int entrada);
-	int CalcularEntrada(vector<int> Key, vector<int> LFSR);
-	void VerOutput(void);
-	void VerKey(vector<int> Key);
 };

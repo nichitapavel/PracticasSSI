@@ -187,7 +187,12 @@ void A5_1::MoveContainer(void){
 void A5_1::Output(void){
 	for (int i = 0; i < Output_.size(); ++i)
 	{
-		cout << Output_[i] << " ";
+		cout << Output_[i];
+		if (i % 4 == 3)
+		{
+			cout << " ";
+		}
+		
 	}
 	cout << endl;
 };

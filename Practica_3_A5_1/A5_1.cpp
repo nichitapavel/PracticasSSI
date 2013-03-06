@@ -13,9 +13,9 @@ void A5_1::DefaultInput(void){
 	int Key2 [] = {0,1,0,1,1,0,0,1,0,0,0,1,1,1,1,0,0,1,1,0,1,0};
 	int Key3 [] = {1,1,1,1,0,0,0,0,1,1,1,1,0,1,1,0,0,1,1,1,1,0,1};
 	int clocking_bits [] = {8,10,10};
-	int LFSR1 [] = {18,17,16,13,0};
-	int LFSR2 [] = {21,20,0};
-	int LFSR3 [] = {22,21,20,7,0};
+	int LFSR1 [] = {18,17,16,13};
+	int LFSR2 [] = {21,20};
+	int LFSR3 [] = {22,21,20,7};
 	
 	/*
 	int Key1 [] = {1,0,0,1,0,0,0,1,0,0,0,1,1,0,1,0,0,0,1};
@@ -46,7 +46,7 @@ void A5_1::DefaultInput(void){
 		clocking_bits_.push_back(clocking_bits[i]);
 	}
 
-	for (int i = 0; i < 3; ++i)
+	for (int i = 0; i < 4; ++i)
 	{
 		LFSR1_.push_back(LFSR1[i]);
 	}
@@ -56,7 +56,7 @@ void A5_1::DefaultInput(void){
 		LFSR2_.push_back(LFSR2[i]);
 	}
 
-	for (int i = 0; i < 3; ++i)
+	for (int i = 0; i < 4; ++i)
 	{
 		LFSR3_.push_back(LFSR3[i]);
 	}
@@ -133,6 +133,7 @@ void A5_1::GetNewInput(void){
 	ReSetLFSR(LFSR3_);
 	cout << "Ciclos de reloj" << endl;
 	clocking_bits_ = GetInputClockingBits();
+	//ReSetLFSR(clocking_bits_);
 };
 
 //funcion que calcula el bit que se utilizara para cifrar

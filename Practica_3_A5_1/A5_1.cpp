@@ -8,6 +8,16 @@
 
 //Los datos de entrada por defecto
 void A5_1::DefaultInput(void){
+	
+	int Key1 [] = {1,0,0,0, 1,0,1,1,0,0,0,1,0,0,0,1,0,0,1};
+	int Key2 [] = {0,1,0,1,1,0,0,1,0,0,0,1,1,1,1,0,0,1,1,0,1,0};
+	int Key3 [] = {1,1,1,1,0,0,0,0,1,1,1,1,0,1,1,0,0,1,1,1,1,0,1};
+	int clocking_bits [] = {8,10,10};
+	int LFSR1 [] = {18,17,16,13,0};
+	int LFSR2 [] = {21,20,0};
+	int LFSR3 [] = {22,21,20,7,0};
+	
+	/*
 	int Key1 [] = {1,0,0,1,0,0,0,1,0,0,0,1,1,0,1,0,0,0,1};
 	int Key2 [] = {0,1,0,1,1,0,0,1,1,1,1,0,0,0,1,0,0,1,1,0,1,0};
 	int Key3 [] = {1,0,1,1,1,1,0,0,1,1,0,1,1,1,1,0,0,0,0,1,1,1,1};
@@ -15,18 +25,18 @@ void A5_1::DefaultInput(void){
 	int LFSR1 [] = {18,17,16,13,0};
 	int LFSR2 [] = {21,20,0};
 	int LFSR3 [] = {22,21,20,7,0};
-	
-	for (int i = 0; i < 8; ++i)
+	*/
+	for (int i = 0; i < 19; ++i)
 	{
 		Key1_.push_back(Key1[i]);
 	}
 
-	for (int i = 0; i < 5; ++i)
+	for (int i = 0; i < 22; ++i)
 	{
 		Key2_.push_back(Key2[i]);
 	}
 
-	for (int i = 0; i < 6; ++i)
+	for (int i = 0; i < 23; ++i)
 	{
 		Key3_.push_back(Key3[i]);
 	}
@@ -190,8 +200,8 @@ void A5_1::Output(void){
 
 //Constructor
 A5_1::A5_1(void){
-	//DefaultInput();
-	GetNewInput();
+	DefaultInput();
+	//GetNewInput();
 };
 
 //Destructor

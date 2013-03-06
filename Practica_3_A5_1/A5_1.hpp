@@ -18,6 +18,7 @@ class A5_1
 
 
 private:
+	void Output(vector<int> input);
 	vector<int> GetInputKey(void);
 	vector<int> GetInputLFSR(void);
 	vector<int> GetInputClockingBits(void);

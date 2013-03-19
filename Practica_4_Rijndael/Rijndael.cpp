@@ -62,13 +62,16 @@ vector<int> Rijndael::PartialSubKeyXORKey(vector<int> PartialSubKey, vector<int>
 }
 
 
-vector<int> Rijndael::PartialSubKeyInitial(vector<int> PartialSubKey, vector<int>& SubKey, vector<int> Key, vector<int> Rcon){
+vector<int> Rijndael::PartialSubKeyInitial(vector<int> PartialSubKey, vector<int>& SubKey, vector<int> Key, vector<int>& Rcon){
 	vector<int> initialpartialsubkey = PartialSubKey;
 	for (int i = 0; i < 4; ++i)
 	{
 		initialpartialsubkey[i] ^= Key[i] ^ Rcon[i];
 		SubKey.push_back(initialpartialsubkey[i]);
 	}
+
+	Rcon.erase (Rcon.begin(), Rcon.begin()+4);
+	//VerVector(Rcon);
 	return initialpartialsubkey;
 }
 
@@ -91,18 +94,21 @@ vector<int> Rijndael::SubKey (vector<int> Key, vector<int>& Rcon, vector<int> SB
 	vector<int> SubKey; // Vector con la Clave antigua
 	vector<int> PartialSubKey;  // Vector auxiliar para el cálculo de cada columna de la nueva clase
 
+	cout << "hola1" << endl;
 	PartialSubKey = PartialSubKeyInitialization(Key);
-
-	PartialSubKey = ByteSub(PartialSubKey, sbox_);
-
+	cout << "hola2" << endl;
+	PartialSubKey = SubBytes(PartialSubKey, sbox_);
+//cout << "hola3" << endl;
 	PartialSubKey = PartialSubKeyInitial(PartialSubKey, SubKey, Key, Rcon);
-
+//cout << "hola4" << endl;
 	for (int i = 4; i < 16; i += 4)
 	{
 		PartialSubKey = PartialSubKeyXORKey(PartialSubKey, SubKey, Key, i, i+4);
 	}
-	
-	VerVector(SubKey);
+	//cout << "hola5" << endl;
+	//VerVector(SubKey);
+	//cout << "hola6" << endl;
+	return PartialSubKey;
 };
 
 void Rijndael::VerVector(vector<int> input){
@@ -123,29 +129,31 @@ Rijndael::Rijndael(){
 
 Rijndael::~Rijndael(){};
 
-void Rijndael::nada(void){
-	VerVector(key_);
-	SubKey(key_, rcon_, sbox_);
-}
-
 void Rijndael::Encrypt(void){
 	vector<int> encrypted_message = message_;
 	vector<int> subkeys = key_;
 	
-	encrypted_message = AddRoundKey(encrypted_message, subkeys);
+VerVector(encrypted_message);
+VerVector(subkeys);
 
+	encrypted_message = AddRoundKey(encrypted_message, subkeys);
+VerVector(encrypted_message);
 	for (int i = 0; i < 9; ++i)
 	{
 		encrypted_message = SubBytes(encrypted_message, sbox_);
 		encrypted_message = ShiftRows(encrypted_message);
 
-		/* MixColumns */
+		encrypted_message = MixColumns(matrix_, encrypted_message);
 
 		subkeys = SubKey(subkeys, rcon_, sbox_);
 		encrypted_message = AddRoundKey(encrypted_message, subkeys);
-		VerVector(subkeys);
-		VerVector(encrypted_message);
+		//VerVector(subkeys);
+		//cout << "aqui" << endl;
+		//VerVector(encrypted_message);
 	}
+
+	VerVector(encrypted_message);
+	VerVector(subkeys);
 
 	encrypted_message = SubBytes(encrypted_message, sbox_);
 	encrypted_message = ShiftRows(encrypted_message);
@@ -153,4 +161,81 @@ void Rijndael::Encrypt(void){
 	VerVector(subkeys);
 	encrypted_message = AddRoundKey(encrypted_message, subkeys);
 	VerVector(encrypted_message);
+}
+
+
+int Rijndael::X2 (int numero){
+
+	bitset<8> n_xor = 0x1b;//ojear si es este
+	bitset<8> aux = numero;
+
+
+	if (aux[7] == 1)
+	{
+		aux <<=1;
+		aux = aux ^ n_xor;
+	}else{
+		aux <<=1;
+	}
+
+   	//cout <<  hex << aux.to_ulong() << " long" << endl;
+    int resultado = (int)aux.to_ulong();
+
+	return resultado;
+}
+
+int Rijndael::X3 (int numero){
+	int a = X2(numero);
+	a ^= numero;
+	cout << a << endl;
+	return a;
+}
+
+vector<int> Rijndael::MixColumns(vector<int> Matrix, vector<int> Message){
+	
+
+	vector <int> MixColumsnPartial;
+	MixColumsnPartial.resize(16,0);
+	
+	int pos_actual = 0;
+	int cont = 0;
+	int aux = 0;;
+	
+	while(aux < 4)
+	{
+		for(int i=0; i<4; i++)
+		{
+			for(int j = 0; j<4; j++)
+			{
+				//cout<<cont<<endl;
+				if(Matrix[i*4+j] == 1)
+					MixColumsnPartial[pos_actual] ^= Message[j + cont];
+				else if (Matrix[i*4+j] == 2)
+					MixColumsnPartial[pos_actual] ^= X2(Message[j + cont]);
+				else if(Matrix[i*4+j] == 3)
+					MixColumsnPartial[pos_actual] ^= X3(Message[j + cont] );
+			}
+			pos_actual++;
+		}
+		cont += 4;
+		aux ++;
+	}
+		
+	return MixColumsnPartial;
+}
+
+void Rijndael::nada(void){
+	vector<int> v;
+	VerVector(key_);
+	//cout << "hola1" << endl; 
+	VerVector(matrix_);
+	//cout << "hola2" << endl;
+	//MixColumns(matrix_, message_);
+	VerVector(rcon_);
+	//cout << "hola3" << endl;
+	v = SubKey(key_, rcon_, sbox_);
+	//cout << "hola4" << endl;
+	VerVector(rcon_);
+	//cout << "hola5" << endl;
+	//SubKey(key_, rcon_, sbox_);
 }

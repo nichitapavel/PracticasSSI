@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <bitset>
 #include "stdlib.h"
 
 using namespace std;
@@ -24,10 +25,15 @@ private:
 	vector<int> SubKey(vector<int> Key, vector<int>& Rcon, vector<int> SBox);
 	vector<int> PartialSubKeyXORKey(vector<int> PartialSubKey, vector<int>& SubKey, vector<int> Key, int begin, int end);
 	vector<int> PartialSubKeyInitialization(vector<int> Key);
-	vector<int> PartialSubKeyInitial(vector<int> PartialSubKey, vector<int>& SubKey, vector<int> Key, vector<int> Rcon);
+	vector<int> PartialSubKeyInitial(vector<int> PartialSubKey, vector<int>& SubKey, vector<int> Key, vector<int>& Rcon);
+	vector<int> MixColumns(vector<int> Matrix, vector<int> Message);
+	
 
 public:
 	Rijndael();
 	~Rijndael();
 	void nada(void);
+	void Encrypt(void);
+	int X2 (int numero);
+	int X3 (int numero);
 };

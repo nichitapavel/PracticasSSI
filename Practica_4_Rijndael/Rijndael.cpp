@@ -72,7 +72,7 @@ vector<int> Rijndael::PartialSubKeyInitial(vector<int> PartialSubKey, vector<int
 	return initialpartialsubkey;
 }
 
-vector<int> Rijndael::PartialSubKeyInitialization(vector<int> Key){
+vector<int> Rijndael::PartialSubKeyRW(vector<int> Key){
 	vector<int> initialpartialsubkey;
 	
 	for (int i = 12; i < 16; ++i)
@@ -91,9 +91,9 @@ vector<int> Rijndael::SubKey (vector<int> Key, vector<int>& Rcon, vector<int> SB
 	vector<int> SubKey; // Vector con la Clave antigua
 	vector<int> PartialSubKey;  // Vector auxiliar para el cálculo de cada columna de la nueva clase
 
-	PartialSubKey = PartialSubKeyInitialization(Key);
+	PartialSubKey = PartialSubKeyRW(Key);
 
-	PartialSubKey = ByteSub(PartialSubKey, sbox_);
+	PartialSubKey = SubBytes(PartialSubKey, sbox_);
 
 	PartialSubKey = PartialSubKeyInitial(PartialSubKey, SubKey, Key, Rcon);
 
@@ -102,7 +102,8 @@ vector<int> Rijndael::SubKey (vector<int> Key, vector<int>& Rcon, vector<int> SB
 		PartialSubKey = PartialSubKeyXORKey(PartialSubKey, SubKey, Key, i, i+4);
 	}
 	
-	VerVector(SubKey);
+	Rcon.erase (Rcon.begin(), Rcon.begin()+4);
+	return SubKey;
 };
 
 void Rijndael::VerVector(vector<int> input){
@@ -111,6 +112,73 @@ void Rijndael::VerVector(vector<int> input){
 		cout << hex << input[i] << " ";
 	}
 	cout << endl;
+}
+
+vector<int> Rijndael::MixColumns(vector<int> Message, vector<int> Matrix){
+	vector <int> solucion;
+	solucion.resize(16,0);
+	
+	int pos_actual = 0;
+	int cont = 0;
+	int aux = 0;
+	
+	while(aux < 4)
+	{
+		for(int i=0; i<4; i++)
+		{
+			for(int j = 0; j<4; j++)
+			{
+				//cout<<cont<<endl;
+				if(Matrix[i*4+j] == 1){
+					solucion[pos_actual] ^= X1(Message[j + cont]);
+				}
+					
+				else if (Matrix[i*4+j] == 2){
+					solucion[pos_actual] ^= X2(Message[j + cont]);
+				}
+				else if(Matrix[i*4+j] == 3){
+					solucion[pos_actual] ^= X3(Message[j + cont] );
+				}
+					
+			}
+			pos_actual++;
+		}
+		cont += 4;
+		aux ++;
+	}
+
+	return solucion;
+}
+
+int Rijndael::X1 (int Number){
+	return Number;
+}
+
+
+int Rijndael::X2 (int Number){
+	bitset<8> n_xor = 0x1b;//ojear si es este
+	bitset<8> aux = Number;
+
+	if (aux[7] == 1)
+	{
+		aux <<=1;
+		aux = aux ^ n_xor;
+	}else{
+		aux <<=1;
+	}
+
+    int resultado = (int)aux.to_ulong();
+    //cout << hex << resultado << endl;
+	return resultado;
+}
+
+int Rijndael::X3 (int Number){
+	int a = X2(Number);
+	
+	a ^= Number;
+	//cout << hex << a << endl;
+	
+	return a;
 }
 
 Rijndael::Rijndael(){
@@ -123,34 +191,45 @@ Rijndael::Rijndael(){
 
 Rijndael::~Rijndael(){};
 
-void Rijndael::nada(void){
-	VerVector(key_);
-	SubKey(key_, rcon_, sbox_);
-}
-
 void Rijndael::Encrypt(void){
 	vector<int> encrypted_message = message_;
 	vector<int> subkeys = key_;
 	
+	cout << "Clave: "; VerVector(subkeys);
+	cout << "Bloque de Texto Original: "; VerVector(encrypted_message);
 	encrypted_message = AddRoundKey(encrypted_message, subkeys);
-
-	for (int i = 0; i < 9; ++i)
-	{
+	cout << endl;
+	
+	cout << "R" << 0 << ":" << endl;
+	cout << "Subclave: "; VerVector(subkeys);
+	cout << "Mensaje: "; VerVector(encrypted_message);
+	for (int i = 0; i < 9; ++i){
 		encrypted_message = SubBytes(encrypted_message, sbox_);
+		
 		encrypted_message = ShiftRows(encrypted_message);
-
-		/* MixColumns */
-
+		
+		encrypted_message = MixColumns(encrypted_message, matrix_);
+		
 		subkeys = SubKey(subkeys, rcon_, sbox_);
 		encrypted_message = AddRoundKey(encrypted_message, subkeys);
-		VerVector(subkeys);
-		VerVector(encrypted_message);
+		
+		cout << "R" << dec << i+1 << ":" << endl;
+		cout << "Subclave: "; VerVector(subkeys);
+		cout << "Mensaje: "; VerVector(encrypted_message);
 	}
+
 
 	encrypted_message = SubBytes(encrypted_message, sbox_);
 	encrypted_message = ShiftRows(encrypted_message);
 	subkeys = SubKey(subkeys, rcon_, sbox_);
-	VerVector(subkeys);
 	encrypted_message = AddRoundKey(encrypted_message, subkeys);
+		
+	cout << "R" << dec << 10 << ":" << endl;
+	cout << "Subclave: "; VerVector(subkeys);
+	cout << "Mensaje: "; VerVector(encrypted_message);
+	
+	cout << endl;
+
+	cout << "Bloque de Texto Cifrado: ";
 	VerVector(encrypted_message);
 }

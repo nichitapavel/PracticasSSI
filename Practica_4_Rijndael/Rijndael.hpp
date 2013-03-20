@@ -31,10 +31,8 @@ private:
 	int X2(int Number);
 	int X3(int Number);
 
-
 public:
 	Rijndael();
 	~Rijndael();
-	void nada(void);
 	void Encrypt(void);
 };

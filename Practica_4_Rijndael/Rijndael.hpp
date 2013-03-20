@@ -14,26 +14,23 @@ class Rijndael
 	vector<int> key_;
 	vector<int> matrix_;
 	vector<int> rcon_;
-	vector<int> state_intermedia_;
 
 private:
-	void VerVector(vector<int> input);
 	void LoadFromFiles(string FileName, vector<int>& ToVector);
-	vector<int> AddRoundKey (vector<int> Message, vector<int> Key);
 	vector<int> SubBytes (vector<int> Message, vector<int> SBox);
 	vector<int> ShiftRows (vector<int> Message);
+	vector<int> AddRoundKey (vector<int> Message, vector<int> Key);
 	vector<int> SubKey(vector<int> Key, vector<int>& Rcon, vector<int> SBox);
-	vector<int> PartialSubKeyXORKey(vector<int> PartialSubKey, vector<int>& SubKey, vector<int> Key, int begin, int end);
 	vector<int> PartialSubKeyRW(vector<int> Key);
-	vector<int> PartialSubKeyInitial(vector<int> PartialSubKey, vector<int>& SubKey, vector<int> Key, vector<int> Rcon);
+	vector<int> PartialSubKeyXORKeyInitial(vector<int> PartialSubKey, vector<int>& SubKey, vector<int> Key, vector<int> Rcon);
+	vector<int> PartialSubKeyXORKey(vector<int> PartialSubKey, vector<int>& SubKey, vector<int> Key, int begin, int end);
 	vector<int> MixColumns(vector<int> Message, vector<int> Matrix);
-	int X1(int Number);
 	int X2(int Number);
 	int X3(int Number);
+	void VerVector(vector<int> input);
 
 public:
 	Rijndael();
 	~Rijndael();
-	void nada(void);
 	void Encrypt(void);
 };

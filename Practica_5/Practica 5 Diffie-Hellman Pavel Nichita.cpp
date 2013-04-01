@@ -1,3 +1,7 @@
+/////////////////
+//Pavel Nichita//
+/////////////////
+
 #include <string>
 #include <iostream>
 #include <vector>

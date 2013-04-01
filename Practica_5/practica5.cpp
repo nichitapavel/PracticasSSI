@@ -4,10 +4,12 @@
 #include <math.h>
 #include "stdlib.h"
 
+#define ull unsigned long long
+
 using namespace std;
 
-bool IsPrime(long number){		
-	long i;
+bool IsPrime(ull number){		
+	ull i;
 	
 	for (i=2; i<number; i++){
 		if (number % i == 0){
@@ -18,15 +20,15 @@ bool IsPrime(long number){
 	return true;	
 }
 
-unsigned long y(unsigned long x, unsigned long alfa, unsigned long primo){
-	unsigned long resultado;
+ull y(ull x, ull alfa, ull primo){
+	ull resultado;
 	resultado = pow(alfa, x);
 	resultado %= primo;
 	return resultado;
 }
 
-unsigned long k(unsigned long y, unsigned long x, unsigned long primo){
-	unsigned long k;
+ull k(ull y, ull x, ull primo){
+	ull k;
 	k = pow(y, x);
 	k %= primo;
 	return k;
@@ -34,7 +36,7 @@ unsigned long k(unsigned long y, unsigned long x, unsigned long primo){
 
 int main()
 {
-	unsigned long alfa, primo = 4, xa, xb;
+	ull alfa, primo = 4, xa, xb;
 	
 	while(IsPrime(primo) != true){
 		cout << "Dame primo: ";
@@ -43,7 +45,7 @@ int main()
 
 	alfa = primo; 
 	while (alfa >= primo){
-		cout << "Dame alfa: ";4
+		cout << "Dame alfa: ";
 		cin >> alfa;
 	}
 	cout << "Dame Xa: ";
@@ -51,7 +53,7 @@ int main()
 	cout << "Dame Xb: ";
 	cin >> xb;
 
-	unsigned long ya, yb;
+	ull ya, yb;
 	ya = y(xa, alfa, primo);
 	yb = y(xb, alfa, primo);
 	cout << "Ya = " << ya << endl;

@@ -14,7 +14,7 @@ using namespace std;
 
 int main(int argc, char const *argv[])
 {
-	ull p = 7, q = 5, N, s = 3, v, iteraciones = 2, x, e, y;
+	ull p = 683, q = 811, N, s = 43215, v, iteraciones = 1, x, e, y;
 
 	/*
 	cout << "Dame p: ";
@@ -38,28 +38,29 @@ int main(int argc, char const *argv[])
 		cin >> x;
 
 		ull a = (x*x) % N;
-		cout << a << " AAAA 11111" << endl;
-
+		
 		cout << "Dame e: ";
 		cin >> e;
 		//int e = rand(0,1);
 
+		cout << a << " A" << endl;
 		if (e == 0)
 		{
 			y = x % N;
+			cout << y << " Y" << endl;
 		}
 		else{
 			y = (x*s) % N;
+			cout << y << " Y" << endl;	
 		}
 		
-		cout << y << " YYYY 111111" << endl;	
+		
 
 		if (e == 0)
 		{
 			y *= y;
-			cout << y << " YYYY " << endl;
+			y %= N;
 			a %= N;
-			cout << a << " AAAA" << endl;
 			if (y == a)
 			{
 				cout << "Iteracion " << i+1 << " Valida" << endl;
@@ -70,9 +71,10 @@ int main(int argc, char const *argv[])
 		}
 		else{
 			y *= y;
-			cout << y << " YYYY" << endl;
+			y %= N;
 			a = (a*v) % N;
-			cout << a << " AAAA" << endl;
+			cout << y << " y*y mod N" << endl;
+			cout << a << " a*v mod N" << endl;
 			if (y == a)
 			{
 				cout << "Iteracion " << i+1 << " Valida" << endl;

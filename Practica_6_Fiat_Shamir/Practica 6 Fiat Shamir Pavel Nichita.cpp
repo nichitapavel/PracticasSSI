@@ -1,5 +1,6 @@
 /////////////////
 //Pavel Nichita//
+// Fiat Shamir //
 /////////////////
 
 #include <string>

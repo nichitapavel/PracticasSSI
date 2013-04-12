@@ -168,3 +168,6 @@ test
 
 # Ignorar los .zip
 *.zip
+
+# Ignorar los .out
+*.out

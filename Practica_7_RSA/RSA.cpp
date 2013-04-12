@@ -133,10 +133,18 @@ bool LehmanPeraltaContenedor(ull p){
 	return false;
 }
 
-void EuclidesExtendido(ull f_n, ull d, ull inverso, ull exponente_modular){
-	ull a = f_n, b = d, modulo = 1;
+void EuclidesExtendido(ull f_n, ull d, ull& inverso, ull& exponente_modular){
+	ull a = f_n, b = d, modulo = 1, a_2 = f_n;
 	long long unidad_negativa = -1, z3, z1 = 0, z2 = 1;
-	while (modulo != 0){
+	
+	
+	if (b > a)
+	{
+		swap(a,b);
+		a_2 = a;
+	}
+
+	while (modulo > 0){
 		modulo = a % b;
 		if (modulo != 0)
 		{
@@ -150,8 +158,15 @@ void EuclidesExtendido(ull f_n, ull d, ull inverso, ull exponente_modular){
 			z2 = z3;
 		}
 	}
+
+	if (z3 < 0)
+	{
+		z3 += a_2;
+	}
+	cout << "Resultado final: " << "Inverso: " << z3 << " mcd(): " << modulo << endl;
 	inverso = (ull)(z3);
 	exponente_modular = (ull)(b);
+	cout << "Resultado final: " << "Inverso: " << inverso << " mcd(): " << exponente_modular << endl;
 }
 
 int main(int argc, char const *argv[])
@@ -171,6 +186,7 @@ int main(int argc, char const *argv[])
 	ull p_12 = 7;
 	ull p_13 = 11;
 
+	/*
 	bool p_es_primo = LehmanPeraltaContenedor(p);
 	cout << p_es_primo << endl;
 	cout << "P2: " << LehmanPeraltaContenedor(p_2) << endl;
@@ -185,17 +201,17 @@ int main(int argc, char const *argv[])
 	cout << "P11: " << LehmanPeraltaContenedor(p_11) << endl;
 	cout << "P12: " << LehmanPeraltaContenedor(p_12) << endl;
 	cout << "P13: " << LehmanPeraltaContenedor(p_13) << endl;
+	*/
 
 	ull a = 19, fn = 12, exponente_modular, inverso;
-	ull a_2 = (p-1)*(q-1), fn_2 = 116402471153538991;
+	ull exponente_modular_1, inverso_1;
+	ull a_2 = 5, fn_2 = 1140103716;
 	ull a_3 = 2753, fn_3 = 3120;
 	ull a_5 = 421;
 
-	EuclidesExtendido(a, fn, inverso, exponente_modular);
-	cout << inverso << " " << exponente_modular << endl;
+	//EuclidesExtendido(a, fn, inverso, exponente_modular);
 
-	EuclidesExtendido(a_3, fn_3, inverso, exponente_modular);
-	cout << inverso << " " << exponente_modular << endl;
+	EuclidesExtendido(a_2, fn_2, inverso_1, exponente_modular_1);
 
 	return 0;
 }

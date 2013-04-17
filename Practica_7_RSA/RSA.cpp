@@ -7,13 +7,13 @@
 #include <vector>
 #include <math.h>
 #include "stdlib.h"
+#include <algorithm>
 
 #define ull unsigned long long
 
 using namespace std;
 
 ull Exponente(ull a, ull p, ull m);
-
 
 //si retorno TRUE puede ser primo, si retorna FALSE no es primo
 bool LehmanPeraltaNoDivisible(ull numero){
@@ -68,7 +68,7 @@ bool LehmanPeraltaPasoB(vector<ull> array_y, ull p){
 	}
 	return true;
 }
-
+	
 //Control paso C de LehPer, primer paso B tiene que devolver TRUE
 //si hay al menos un numero que es igual a p-1, entonces p es primo
 //devuelve TRUE si p es primo
@@ -148,12 +148,12 @@ void EuclidesExtendido(ull f_n, ull d, ull& inverso, ull& exponente_modular){
 		modulo = a % b;
 		if (modulo != 0)
 		{
-			cout << a << " a b " << b << endl;
+			//cout << a << " a b " << b << endl;
 			z3 = -1*(a/b)*z2 + z1;
-			cout << z3 << " z3" << endl;
+			//cout << z3 << " z3" << endl;
 			a = b;
 			b = modulo;
-			cout << z1 << " z1 z2 " << z2 << endl;
+			//cout << z1 << " z1 z2 " << z2 << endl;
 			z1 = z2;
 			z2 = z3;
 		}
@@ -163,16 +163,85 @@ void EuclidesExtendido(ull f_n, ull d, ull& inverso, ull& exponente_modular){
 	{
 		z3 += a_2;
 	}
-	cout << "Resultado final: " << "Inverso: " << z3 << " mcd(): " << modulo << endl;
+	//cout << "Resultado final: " << "Inverso: " << z3 << " mcd(): " << modulo << endl;
 	inverso = (ull)(z3);
 	exponente_modular = (ull)(b);
-	cout << "Resultado final: " << "Inverso: " << inverso << " mcd(): " << exponente_modular << endl;
+	//cout << "Resultado final: " << "Inverso: " << inverso << " mcd(): " << exponente_modular << endl;
+	cout << "E: " << inverso << endl;
+}
+
+string GetMessage(void){
+ 	// declaraciones iniciales, el espacio blanco que se utilizara para cazar
+ 	// i guardamos la posicion del espacio en blanco
+ 	// message se guarda el mensaje sin espacios
+ 	char space = ' ';
+ 	int i;
+ 	string message;
+ 	
+ 	// el usuario introduce el mensaje y lo guardamos en message con espacios
+ 	cout << "Message: ";
+ 	//cin.get();
+ 	getline(cin, message);
+ 	
+ 	//cout << message << endl;
+ 	// se obtiene la posicion del primer espacio blanco encontrado
+ 	i = message.find(space);
+
+ 	//cout << i << endl;
+ 	// si no se encuentra espacion en blanco se devuelve -1
+ 	// hasat que encuentra espacio blanco en
+ 	while (i != -1){
+ 		//borras el espacio de la posicion i y
+ 		// como es solo un caracter, tamaño 1
+ 		message.erase(i, 1);
+ 		// se vuelve a buscar el siguiente espacio
+ 		i = message.find(space);
+ 	}
+
+ 	// pasar a UPPERCASE si es necesario
+ 	transform(message.begin(), message.end(), message.begin(), ::toupper);
+
+ 	// se devuelve el mensaje sin espacios
+ 	return message;
+};
+
+vector<ull> RSA(string mensaje, ull e, ull n){
+	vector<ull> mensaje_cifrado;
+	ull mensaje_base_100, caracter_en_base100;
+
+	for (int i = 0; i < mensaje.size(); i+=4)
+	{
+		mensaje_base_100 = 0;
+		for (int j = 0; j < 4; ++j)
+		{
+			caracter_en_base100 = (ull)(mensaje[i+j])-65;
+			mensaje_base_100 += caracter_en_base100*pow(100, 3-j);
+			cout << mensaje_base_100 << endl;
+		}
+		cout << endl;
+		cout << Exponente(mensaje_base_100, e, n) << endl;
+		mensaje_cifrado.push_back(Exponente(mensaje_base_100, e, n));
+	}
+	
+	return  mensaje_cifrado;
+}
+
+void VerMensajeCifrado(vector<ull> mensaje_cifrado){
+	for (int i = 0; i < mensaje_cifrado.size(); ++i)
+	{
+		cout << mensaje_cifrado[i] << " ";
+	}
+	cout << endl;
 }
 
 int main(int argc, char const *argv[])
 {
 	
-	ull p = 238855417, q = 53, n = p*q, f_n = (p-1) * (q-1);
+	ull p = 421, q = 7, n = p*q, f_n = (p-1) * (q-1), d = 1619;
+	string mensaje = "MANDADINEROS";
+	//ull p = 12347, q = 92347, n = p*q, f_n = (p-1) * (q-1), d = 5;	
+	//string mensaje = "AMIGOMIO";
+	/*
 	ull p_2 = 885320963;
 	ull p_3 = 61;
 	ull p_4 = 53;
@@ -186,7 +255,7 @@ int main(int argc, char const *argv[])
 	ull p_12 = 7;
 	ull p_13 = 11;
 
-	/*
+	
 	bool p_es_primo = LehmanPeraltaContenedor(p);
 	cout << p_es_primo << endl;
 	cout << "P2: " << LehmanPeraltaContenedor(p_2) << endl;
@@ -203,15 +272,31 @@ int main(int argc, char const *argv[])
 	cout << "P13: " << LehmanPeraltaContenedor(p_13) << endl;
 	*/
 
-	ull a = 19, fn = 12, exponente_modular, inverso;
-	ull exponente_modular_1, inverso_1;
-	ull a_2 = 5, fn_2 = 1140103716;
-	ull a_3 = 2753, fn_3 = 3120;
-	ull a_5 = 421;
+	//ull peta = 885320963, qutoa = 238855417, d = 1164402471153538991;
+	//ull a = 19, fn = 12;
+	//ull exponente_modular_1, inverso_1, f_n = (peta-1) * (qutoa-1);
+	//ull a_2 = 2753, fn_2 = 3120;
+	//ull a_3 = 2753, fn_3 = 3120;
+	//ull a_5 = 421;
+	
+	ull inverso, exponente_modular;
+	cout << "P: " << p << endl;
+	cout << "Q: " << q << endl;
+	cout << "D: " << d << endl;
+	cout << "N: " << n << endl;
+	cout << "F(n): " << f_n << endl;
+	cout << mensaje << endl;
 
-	//EuclidesExtendido(a, fn, inverso, exponente_modular);
 
-	EuclidesExtendido(a_2, fn_2, inverso_1, exponente_modular_1);
+	EuclidesExtendido(d, f_n, inverso, exponente_modular);
 
+	//string mensaje = GetMessage();
+
+	vector<ull> mensaje_cifrado = RSA(mensaje, inverso, n);
+
+	VerMensajeCifrado(mensaje_cifrado);
+	
+	cout << Exponente(10, 100, 3) << endl;
+	cout << Exponente(43215, 2, 553913) << endl;
 	return 0;
 }

@@ -41,6 +41,16 @@ vector<ull> LehmanPeraltaRandom100(ull p){
 	return array;
 }
 
+vector<ull> LehmanPeraltaCalculoY(vector<ull> array_aleatorio, ull p){
+	vector<ull> array_y;
+	ull mitad_p = (p-1)/2;
+	for (int i = 0; i < 100; ++i)
+	{
+		array_y.push_back(Exponente(array_aleatorio[i], mitad_p, p));
+	}
+	return array_y;
+}
+
 //Control del paso A de LehPer, para los 100 numeros del array, comprobar [a^((p-1)/2) mod p] == 1
 //si el resultado de todo ai, el numero no es primo
 //si existe al menos un ai distinto de 1 se pasa a siguiente paso
@@ -83,19 +93,9 @@ bool LehmanPeraltaPasoC(vector<ull> array_y, ull p){
 	return false;
 }
 
-vector<ull> LehmanPeraltaCalculoY(vector<ull> array_aleatorio, ull p){
-	vector<ull> array_y;
-	for (int i = 0; i < 100; ++i)
-	{
-		array_y.push_back(Exponente(array_aleatorio[i], p, p));
-	}
-	return array_y;
-}
-
 ull Exponente(ull a, ull p, ull m){
 	ull expo = 1;
 	ull x = a % m;
-	p = (p-1)/2;
 	while (p > 0){
 		if (p % 2 == 1)
 		{
@@ -205,7 +205,7 @@ string GetMessage(void){
  	return message;
 };
 
-vector<ull> RSA(string mensaje, ull e, ull n){
+vector<ull> RSACifrar(string mensaje, ull e, ull n){
 	vector<ull> mensaje_cifrado;
 	ull mensaje_base_100, caracter_en_base100;
 
@@ -216,10 +216,10 @@ vector<ull> RSA(string mensaje, ull e, ull n){
 		{
 			caracter_en_base100 = (ull)(mensaje[i+j])-65;
 			mensaje_base_100 += caracter_en_base100*pow(100, 3-j);
-			cout << mensaje_base_100 << endl;
+			//cout << mensaje_base_100 << endl;
 		}
-		cout << endl;
-		cout << Exponente(mensaje_base_100, e, n) << endl;
+		//cout << endl;
+		//cout << Exponente(mensaje_base_100, e, n) << endl;
 		mensaje_cifrado.push_back(Exponente(mensaje_base_100, e, n));
 	}
 	
@@ -232,6 +232,15 @@ void VerMensajeCifrado(vector<ull> mensaje_cifrado){
 		cout << mensaje_cifrado[i] << " ";
 	}
 	cout << endl;
+}
+
+void RSADescifrar(vector<ull> mensaje_cifrado, ull d, ull n){
+	vector<ull> mensaje_descifrado;
+	for (int i = 0; i < mensaje_cifrado.size(); ++i)
+	{
+		mensaje_descifrado.push_back(Exponente(mensaje_cifrado[i], d, n));
+	}
+	VerMensajeCifrado(mensaje_descifrado);
 }
 
 int main(int argc, char const *argv[])
@@ -258,7 +267,9 @@ int main(int argc, char const *argv[])
 	
 	bool p_es_primo = LehmanPeraltaContenedor(p);
 	cout << p_es_primo << endl;
+	
 	cout << "P2: " << LehmanPeraltaContenedor(p_2) << endl;
+	
 	cout << "P3: " << LehmanPeraltaContenedor(p_3) << endl;
 	cout << "P4: " << LehmanPeraltaContenedor(p_4) << endl;
 	cout << "P5: " << LehmanPeraltaContenedor(p_5) << endl;
@@ -292,11 +303,10 @@ int main(int argc, char const *argv[])
 
 	//string mensaje = GetMessage();
 
-	vector<ull> mensaje_cifrado = RSA(mensaje, inverso, n);
+	vector<ull> mensaje_cifrado = RSACifrar(mensaje, inverso, n);
 
 	VerMensajeCifrado(mensaje_cifrado);
-	
-	cout << Exponente(10, 100, 3) << endl;
-	cout << Exponente(43215, 2, 553913) << endl;
+
+	RSADescifrar(mensaje_cifrado, d, n);	
 	return 0;
 }

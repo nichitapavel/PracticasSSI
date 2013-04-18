@@ -315,6 +315,10 @@ int main(int argc, char const *argv[])
 			VerMensajeCifrado(mensaje_cifrado);
 		}
 	}
+	else
+	{
+		cout << "Datos Erroneos!" << endl;
+	}
 	
 
 	//vector<ull> mensaje_cifrado(1, 12001303);

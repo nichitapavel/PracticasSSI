@@ -10,7 +10,7 @@
 #include <algorithm>
 
 #define ull unsigned long long
-#define BASE 100
+#define BASE 26
 #define TAMANOVECTORALEATORIO 100
 
 using namespace std;
@@ -57,7 +57,7 @@ vector<ull> LehmanPeraltaCalculoA(vector<ull> array_aleatorio, ull p){
 //si el resultado de todo ai, el numero no es primo
 //si existe al menos un ai distinto de 1 se pasa a siguiente paso
 //retorno FALSE si encuentra al menos un numero que cumple [a^((p-1)/2) mod p] != 1
-bool LehmanPeraltaPasoA(vector<ull> array_aleatorio, vector<ull> array_a, ull p){
+bool LehmanPeraltaPasoA(vector<ull> array_a, ull p){
 	for (int i = 0; i < TAMANOVECTORALEATORIO; ++i)
 	{
 		if (array_a[i] != 1)
@@ -99,7 +99,7 @@ bool LehmanPeraltaPasoC(vector<ull> array_a, ull p){
 //Contenedor de todo el algoritmo de Lehman Peralta
 //Devuelve TRUE si numero p es primo
 bool LehmanPeraltaContenedor(ull p){
-	vector<ull> array_aleatorio, array_y;
+	vector<ull> array_aleatorio, array_a;
 	
 	if (p == 2 or p == 3 or p == 5 or p == 7 or p == 11)
 	{
@@ -109,12 +109,12 @@ bool LehmanPeraltaContenedor(ull p){
 	if (LehmanPeraltaNoDivisible(p) == true)
 	{
 		array_aleatorio = LehmanPeraltaRandom100(p);
-		array_y = LehmanPeraltaCalculoA(array_aleatorio, p);
-		if (LehmanPeraltaPasoA(array_aleatorio, array_y, p) == false)
+		array_a = LehmanPeraltaCalculoA(array_aleatorio, p);
+		if (LehmanPeraltaPasoA(array_a, p) == false)
 		{
-			if (LehmanPeraltaPasoB(array_y, p) == true)
+			if (LehmanPeraltaPasoB(array_a, p) == true)
 			{
-				return LehmanPeraltaPasoC(array_y, p);
+				return LehmanPeraltaPasoC(array_a, p);
 			}
 		}
 	} 
@@ -217,22 +217,22 @@ string GetMessage(void){
  	return message;
 };
 
-vector<ull> RSACifrar(string mensaje, ull e, ull n){
+vector<ull> RSACifrar(string mensaje, ull e, ull n, ull j){
 	vector<ull> mensaje_cifrado;
-	ull mensaje_base_100, caracter_en_base100;
+	ull mensaje_base, caracter_en_base;
 
-	for (int i = 0; i < mensaje.size(); i+=4)
+	for (int i = 0; i < mensaje.size(); i+=j)
 	{
-		mensaje_base_100 = 0;
-		for (int j = 0; j < 4; ++j)
+		mensaje_base = 0;
+		for (int k = 0; k < j; ++k)
 		{
-			caracter_en_base100 = (ull)(mensaje[i+j])-65;
-			mensaje_base_100 += caracter_en_base100*pow(BASE, 3-j);
-			//cout << mensaje_base_100 << endl;
+			caracter_en_base = (ull)(mensaje[i+k])-65;
+			mensaje_base += caracter_en_base*pow(BASE, j-k-1);
+			cout << mensaje_base << endl;
 		}
 		//cout << endl;
 		//cout << Exponente(mensaje_base_100, e, n) << endl;
-		mensaje_cifrado.push_back(Exponente(mensaje_base_100, e, n));
+		mensaje_cifrado.push_back(Exponente(mensaje_base, e, n));
 	}
 	
 	return  mensaje_cifrado;
@@ -246,15 +246,15 @@ void VerMensajeCifrado(vector<ull> mensaje_cifrado){
 	cout << endl;
 }
 
-void RSADescifrar(vector<ull> mensaje_cifrado, ull d, ull n){
-	//ull input, a, base;
-	ull input = mensaje_cifrado[0], a, base;
+void RSADescifrar(vector<ull> mensaje_cifrado, ull d, ull n, ull j){
+	ull input, a, base;
+	//ull input = mensaje_cifrado[0], a, base;
 	for (int i = 0; i < mensaje_cifrado.size(); ++i)
 	{
-		//input = Exponente(mensaje_cifrado[i], d, n);
-		for (int i = 0; i < 3; ++i)
+		input = Exponente(mensaje_cifrado[i], d, n);
+		for (int i = 0; i < j-1; ++i)
 		{
-			base = pow(BASE, 3-i);
+			base = pow(BASE, j-1-i);
 			a = input/base;
 			input = input % base;
 			cout << (char)(a + 65);
@@ -264,20 +264,30 @@ void RSADescifrar(vector<ull> mensaje_cifrado, ull d, ull n){
 	cout << endl;
 }
 
+ull CalcularJ(ull n){
+	ull potencia_j = 0;
+	ull j = -1;
+	while ( potencia_j < n){
+		j++;
+		potencia_j = pow(BASE, j);
+	}
+	return j;
+}
+
 int main(int argc, char const *argv[])
 {
 	// Ejemplo 1
-	
+	/*
 	ull p = 421, q = 7, n = p*q, f_n = (p-1) * (q-1), d = 1619;
 	ull inverso, exponente_modular;
 	string mensaje = "MANDADINEROS";
 	vector<ull> mensaje_cifrado;
 	
 	// Ejemplo	2
-	/*
-	ull p = 12347, q = 92347, n = p*q, f_n = (p-1) * (q-1), d = 5;	
+	/**/
+	ull p = 2347, q = 347, n = p*q, f_n = (p-1) * (q-1), d = 5;	
 	ull inverso, exponente_modular;
-	string mensaje = "AMIGOMIO";
+	string mensaje = "AMIGO";
 	vector<ull> mensaje_cifrado;
 
 	/*
@@ -301,6 +311,8 @@ int main(int argc, char const *argv[])
 	cout << "D: " << d << endl;
 	cout << "N: " << n << endl;
 	cout << "F(n): " << f_n << endl;
+	ull j = CalcularJ(n) - 1;
+	cout << "J: " << j << endl;
 	
 	
 	if (LehmanPeraltaContenedor(p) and LehmanPeraltaContenedor(q))
@@ -310,7 +322,7 @@ int main(int argc, char const *argv[])
 			cout << "D no tiene inverso!" << endl;
 		else
 		{
-			mensaje_cifrado = RSACifrar(mensaje, inverso, n);
+			mensaje_cifrado = RSACifrar(mensaje, inverso, n, j);
 			cout << "Mensaje cifrado: ";
 			VerMensajeCifrado(mensaje_cifrado);
 		}
@@ -320,10 +332,9 @@ int main(int argc, char const *argv[])
 		cout << "Datos Erroneos!" << endl;
 	}
 	
-
 	//vector<ull> mensaje_cifrado(1, 12001303);
 	//cout << "Mensaje descifrado: ";
-	//RSADescifrar(mensaje_cifrado, d, n);
+	RSADescifrar(mensaje_cifrado, d, n, j);
 
 	/*
 	ull p_2 = 885320963;

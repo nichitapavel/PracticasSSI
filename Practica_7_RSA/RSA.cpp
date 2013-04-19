@@ -287,7 +287,7 @@ int main(int argc, char const *argv[])
 	/**/
 	ull p = 2347, q = 347, n = p*q, f_n = (p-1) * (q-1), d = 5;	
 	ull inverso, exponente_modular;
-	string mensaje = "AMIGO";
+	string mensaje = "AMIG";
 	vector<ull> mensaje_cifrado;
 
 	/*

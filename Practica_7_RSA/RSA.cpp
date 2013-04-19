@@ -228,10 +228,7 @@ vector<ull> RSACifrar(string mensaje, ull e, ull n, ull j){
 		{
 			caracter_en_base = (ull)(mensaje[i+k])-65;
 			mensaje_base += caracter_en_base*pow(BASE, j-k-1);
-			cout << mensaje_base << endl;
 		}
-		//cout << endl;
-		//cout << Exponente(mensaje_base_100, e, n) << endl;
 		mensaje_cifrado.push_back(Exponente(mensaje_base, e, n));
 	}
 	
@@ -248,7 +245,7 @@ void VerMensajeCifrado(vector<ull> mensaje_cifrado){
 
 void RSADescifrar(vector<ull> mensaje_cifrado, ull d, ull n, ull j){
 	ull input, a, base;
-	//ull input = mensaje_cifrado[0], a, base;
+	
 	for (int i = 0; i < mensaje_cifrado.size(); ++i)
 	{
 		input = Exponente(mensaje_cifrado[i], d, n);
@@ -332,8 +329,6 @@ int main(int argc, char const *argv[])
 		cout << "Datos Erroneos!" << endl;
 	}
 	
-	//vector<ull> mensaje_cifrado(1, 12001303);
-	//cout << "Mensaje descifrado: ";
 	RSADescifrar(mensaje_cifrado, d, n, j);
 
 	/*
